@@ -4,7 +4,7 @@
 
 A web app that helps you discover, organize, and decide what movies to watch. Build your watchlist, rank your favorites, and get quick recommendations—all stored locally in your browser.
 
-[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://ericwagnergithub.github.io/pick_a_movie)
+[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://ericwagnerdata.github.io/pick_a_movie)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 ---
@@ -25,13 +25,13 @@ A web app that helps you discover, organize, and decide what movies to watch. Bu
 
 ### Try It Live
 
-Visit the live app: **[https://ericwagnergithub.github.io/pick_a_movie](https://ericwagnergithub.github.io/pick_a_movie)**
+Visit the live app: **[https://ericwagnerdata.github.io/pick_a_movie](https://ericwagnerdata.github.io/pick_a_movie)**
 
 ### Run Locally
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/ericwagnergithub/pick_a_movie.git
+   git clone https://github.com/ericwagnerdata/pick_a_movie.git
    cd pick_a_movie
    ```
 
@@ -275,7 +275,7 @@ MIT License - feel free to use this project however you'd like!
 
 ## 📞 Support
 
-- **Issues**: [GitHub Issues](https://github.com/ericwagnergithub/pick_a_movie/issues)
+- **Issues**: [GitHub Issues](https://github.com/ericwagnerdata/pick_a_movie/issues)
 - **Questions**: Open a discussion or issue
 - **Feature Requests**: See PRD.md for planned features
 
