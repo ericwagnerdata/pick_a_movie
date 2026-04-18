@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(tar -xO \"pick-a-movie/project/Pick A Movie - Mid-fi Mobile.html\")",
+      "Read(//tmp/**)",
+      "Read(//c/tmp/**)",
+      "Bash(gunzip -c \"C:/Users/ericc/.claude/projects/c--Users-ericc-OneDrive-Documents-GitHub-pick-a-movie/7a1fa342-bc11-4b0b-a18b-61e2c205f23c/tool-results/webfetch-1776475283231-xqvu7h.bin\")",
+      "Bash(npx serve *)",
+      "Bash(rm -rf node_modules package.json package-lock.json screenshots.js)",
+      "Bash(kill %1)"
+    ]
+  }
+}

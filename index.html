@@ -3,216 +3,345 @@
 <head>
   <meta charset="UTF-8" />
   <title>Pick A Movie</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎬</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="app">
-    <header>
-      <h1>Pick A Movie 🎬</h1>
-      <p class="subtitle">Discovery Queue + smart ranking for what to watch next.</p>
-    </header>
 
-    <main>
-      <!-- Main menu -->
-      <section id="screen-main-menu" class="screen">
-        <h2>Main Menu</h2>
+<div class="stage">
+  <div class="phone">
 
-        <div class="card" id="onboarding-card">
-          <h3>How it works</h3>
-          <p class="small-text">
-            <strong>1. Discover:</strong> Review movies in batches and classify them as Watchlist, Seen, or Not Interested.
-            <br><strong>2. Rank:</strong> Compare pairs of movies to build your ranked list.
-            <br><strong>3. Decide:</strong> See your top picks and decide what to watch!
-          </p>
-          <p class="small-text muted" style="margin-top: 0.5rem;">
-            💾 All data is stored locally in your browser. Use Export to backup your data.
-          </p>
+    <div class="statusbar">
+      <span>9:41</span>
+      <span style="display:flex;gap:5px;align-items:center;">
+        <span style="font-size:12px;">●●●</span>
+        <span style="font-size:12px;border:1px solid currentColor;border-radius:2px;padding:1px 3px;">100</span>
+      </span>
+    </div>
+
+    <div class="app-body" id="app-body">
+
+      <!-- App bar — only shown on Home -->
+      <div class="appbar" id="appbar">
+        <div class="brand">
+          <span class="dot">●</span>
+          <span class="name">Pick a <em>Movie</em></span>
+        </div>
+        <button class="icon-btn" id="btn-settings" aria-label="Settings">⚙</button>
+      </div>
+
+      <!-- ═══════════════ HOME ═══════════════ -->
+      <section class="screen" id="screen-home">
+        <div class="h1">What to watch<br/><span class="u">tonight?</span></div>
+        <p class="h1-sub">Classify movies, rank in pairs, surface your real top picks — all in your browser.</p>
+
+        <!-- Tonight's pick -->
+        <div class="tonight" id="tonight-card">
+          <div class="eye">
+            <span>◆ Tonight's pick · #1</span>
+            <button id="btn-reshuffle" style="color:var(--ink-dim);font-size:10px;font-family:var(--mono);">↻ shuffle</button>
+          </div>
+          <div class="tonight-row">
+            <div class="poster sm" id="tonight-poster-wrap">
+              <img id="tonight-poster" class="poster-img" src="" alt="" />
+              <span class="lbl" id="tonight-poster-lbl">?</span>
+            </div>
+            <div>
+              <h3 id="tonight-title" style="font-family:var(--serif);font-size:20px;line-height:1.1;">—</h3>
+              <div class="m" id="tonight-meta"></div>
+              <div class="star" id="tonight-rating"></div>
+            </div>
+          </div>
         </div>
 
-        <div class="card">
-          <h3>Modes</h3>
-          <div class="button-column">
-            <button id="btn-start-discovery">Start / Continue Discovery Queue</button>
-            <button id="btn-rank-watchlist">Rank your Watchlist</button>
-            <button id="btn-rank-seen">Rank your Seen Movies</button>
+        <!-- Stats grid -->
+        <div class="eye-h">your collection <button class="link" id="btn-view-all">view all →</button></div>
+        <div class="collection">
+          <div class="stat">
+            <div class="n" id="stat-watchlist-count">0</div>
+            <div class="k">WATCHLIST</div>
+          </div>
+          <div class="stat">
+            <div class="n" id="stat-seen-count">0</div>
+            <div class="k">SEEN</div>
+          </div>
+          <div class="stat dim">
+            <div class="n" id="stat-not-interested-count">0</div>
+            <div class="k">NOT FOR ME</div>
+          </div>
+          <div class="stat dim">
+            <div class="n" id="stat-unreviewed-count">0</div>
+            <div class="k">TO REVIEW</div>
           </div>
         </div>
 
-        <div class="card">
-          <h3>Your stats</h3>
-          <ul class="stats-list">
-            <li><span>Watchlist:</span> <span id="stat-watchlist-count">0</span></li>
-            <li><span>Seen:</span> <span id="stat-seen-count">0</span></li>
-            <li><span>Not interested:</span> <span id="stat-not-interested-count">0</span></li>
-            <li><span>Unreviewed in Discovery Queue:</span> <span id="stat-unreviewed-count">0</span></li>
-          </ul>
-
-          <div class="button-column">
-            <button id="btn-settings">Settings</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Settings screen -->
-      <section id="screen-settings" class="screen hidden">
-        <div class="card">
-          <div class="screen-header">
-            <h2>Settings</h2>
-            <button class="link-button" id="btn-settings-back">← Back to main menu</button>
-          </div>
-
-          <h3>Data Management</h3>
-          <p class="small-text muted">
-            Export your data to backup your progress. Import data to restore from a previous backup.
-          </p>
-
-          <div class="button-column">
-            <button id="btn-export-data">Export my data</button>
-            <button id="btn-import-data">Import data</button>
-          </div>
-          <input
-            type="file"
-            id="import-file-input"
-            accept="application/json"
-            style="display: none"
-          />
-
-          <h3 style="margin-top: 1.5rem;">Clear Rankings</h3>
-          <p class="small-text muted">
-            Clearing rankings will reset all comparison history for that list. You can re-rank from scratch.
-          </p>
-
-          <div class="button-column">
-            <button id="btn-clear-watchlist-rankings">Clear Watchlist Rankings</button>
-            <button id="btn-clear-seen-rankings">Clear Seen Rankings</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Discovery Filters screen -->
-      <section id="screen-discovery-filters" class="screen hidden">
-        <div class="card">
-          <div class="screen-header">
-            <h2>Filter Discovery Queue</h2>
-            <button class="link-button" id="btn-filters-back">← Back to main menu</button>
-          </div>
-          <p class="small-text muted">
-            Choose what types of movies you want to discover. Leave all unchecked to see everything.
-          </p>
-
-          <h3 style="display: none;">Genres</h3>
-          <div id="genre-filters" class="filter-options" style="display: none;"></div>
-
-          <h3>Decade</h3>
-          <div id="decade-filters" class="filter-options"></div>
-
-          <h3 style="margin-top: 1.5rem;">Minimum Rating</h3>
-          <div class="filter-options">
-            <select id="rating-filter">
-              <option value="0">All ratings</option>
-              <option value="6.0">6.0+</option>
-              <option value="7.0">7.0+</option>
-              <option value="8.0">8.0+</option>
-              <option value="9.0">9.0+</option>
-            </select>
-          </div>
-
-          <div class="button-column" style="margin-top: 1.5rem;">
-            <button id="btn-apply-filters">Start Queue with Filters</button>
-            <button id="btn-clear-filters" class="btn-skip">Clear All Filters</button>
-          </div>
+        <!-- Mode buttons -->
+        <div class="eye-h">modes</div>
+        <div class="modes">
+          <button class="mode-btn" id="btn-start-discovery">
+            <div class="icon">🎬</div>
+            <div>
+              <div class="t">Discover <span class="badge" id="badge-unreviewed">0</span></div>
+              <div class="d">Classify movies — watchlist, seen, or nope.</div>
+            </div>
+            <div class="ar">→</div>
+          </button>
+          <button class="mode-btn" id="btn-rank-watchlist">
+            <div class="icon">⚖</div>
+            <div>
+              <div class="t">Rank pairs</div>
+              <div class="d">Head-to-head. Transitive logic cuts the work.</div>
+            </div>
+            <div class="ar">→</div>
+          </button>
+          <button class="mode-btn" id="btn-top-picks">
+            <div class="icon">🏆</div>
+            <div>
+              <div class="t">Top picks</div>
+              <div class="d">Your ranked watchlist. Pick one to watch.</div>
+            </div>
+            <div class="ar">→</div>
+          </button>
         </div>
       </section>
 
-      <!-- Discovery Queue -->
-      <section id="screen-discovery" class="screen hidden">
-        <div class="card">
-          <div class="screen-header">
-            <h2>Discovery Queue</h2>
-            <button class="link-button" id="btn-discovery-back">← Back to main menu</button>
+      <!-- ═══════════════ DISCOVERY ═══════════════ -->
+      <section class="screen hidden" id="screen-discovery">
+        <div class="back-bar">
+          <button class="back" id="btn-discovery-back" aria-label="Back">←</button>
+          <h1>Discover</h1>
+          <div style="margin-left:auto;" class="chip" id="discovery-batch-label">Batch 1</div>
+        </div>
+
+        <div class="d-prog">
+          <span id="discovery-progress">1 OF 10</span>
+          <div class="dots" id="d-dots"></div>
+          <span id="discovery-reviewed-count">0 DONE</span>
+        </div>
+
+        <div class="d-poster" id="d-poster-wrap">
+          <img id="discovery-poster" class="d-poster-img" src="" alt="" />
+          <div class="overlay">
+            <div class="meta" id="discovery-movie-meta"></div>
+            <h2 id="discovery-movie-title"></h2>
           </div>
-          <p class="small-text">
-            Review movies in batches of 10. For each one, say if you've seen it, want to watch it, or aren't interested.
-          </p>
+        </div>
 
-          <div id="discovery-content">
-            <p id="discovery-progress" class="small-text"></p>
+        <div class="d-facts" id="discovery-chips"></div>
 
-            <div class="movie-card">
-              <img id="discovery-poster" class="movie-poster" src="" alt="Movie poster" />
-              <div class="movie-info">
-                <div id="discovery-movie-title" class="movie-title-large"></div>
-                <div id="discovery-movie-meta" class="movie-meta"></div>
-                <div id="discovery-movie-overview" class="movie-overview"></div>
-                <div id="discovery-movie-credits" class="movie-credits"></div>
+        <p class="d-overview" id="discovery-movie-overview"></p>
+        <div class="d-credits" id="discovery-movie-credits"></div>
+
+        <p class="empty-msg" id="discovery-empty-message"></p>
+
+        <button class="d-primary" id="btn-discovery-watchlist">＋ Add to watchlist</button>
+        <div class="d-secondary-row">
+          <button class="d-secondary" id="btn-discovery-seen">✓ Seen it</button>
+          <button class="d-secondary" id="btn-discovery-not-interested">✕ Not for me</button>
+        </div>
+        <button class="d-skip" id="btn-discovery-skip">↷ Skip for now</button>
+      </section>
+
+      <!-- ═══════════════ RANKING ═══════════════ -->
+      <section class="screen hidden" id="screen-ranking">
+        <div class="back-bar">
+          <button class="back" id="btn-ranking-back" aria-label="Back">←</button>
+          <h1 id="ranking-title">Rank</h1>
+          <div class="seg" id="rank-seg" style="margin-left:auto;">
+            <button class="active" data-mode="watchlist">Watchlist</button>
+            <button data-mode="seen">Seen</button>
+          </div>
+        </div>
+
+        <p class="r-sub" id="ranking-description">Which would you rather watch?</p>
+
+        <div class="r-prog">
+          <div class="bar"><i id="r-fill" style="width:0%;"></i></div>
+          <div class="val"><span id="r-stable">0%</span> stable · <span id="r-count">0 pairs</span></div>
+        </div>
+
+        <div class="trans" id="trans-callout">
+          <div class="top">
+            <span class="icon">A &gt; B &gt; C</span>
+            <span class="cnt"><b id="r-inferred">+0</b> inferred</span>
+          </div>
+          <p>We skip pairs we can infer — if <code>A&gt;B</code> and <code>B&gt;C</code>, then <code>A&gt;C</code>.</p>
+        </div>
+
+        <div id="ranking-pair-area">
+          <div class="pair" id="ranking-pair">
+            <div class="pick" id="btn-rank-left" data-choice="A">
+              <div class="poster pick-poster">
+                <img id="rank-left-poster" class="pick-poster-img" src="" alt="" />
+                <span class="lbl pick-lbl" id="rank-left-poster-lbl">A</span>
+              </div>
+              <div class="info">
+                <div>
+                  <h3 id="rank-left-title"></h3>
+                  <div class="m" id="rank-left-meta"></div>
+                  <div class="ranking-credits" id="rank-left-credits"></div>
+                </div>
+                <div class="cta">Prefer this →</div>
               </div>
             </div>
 
-            <div id="discovery-buttons" class="button-column">
-              <button id="btn-discovery-seen" class="btn-seen">I've seen this</button>
-              <button id="btn-discovery-watchlist" class="btn-watchlist">I want to watch this</button>
-              <button id="btn-discovery-not-interested" class="btn-not-interested">I'm not interested</button>
-              <button id="btn-discovery-skip" class="btn-skip">Skip this for now</button>
-            </div>
+            <div class="vs-dot">vs</div>
 
-            <p id="discovery-empty-message" class="small-text muted"></p>
+            <div class="pick" id="btn-rank-right" data-choice="B">
+              <div class="poster pick-poster">
+                <img id="rank-right-poster" class="pick-poster-img" src="" alt="" />
+                <span class="lbl pick-lbl" id="rank-right-poster-lbl">B</span>
+              </div>
+              <div class="info">
+                <div>
+                  <h3 id="rank-right-title"></h3>
+                  <div class="m" id="rank-right-meta"></div>
+                  <div class="ranking-credits" id="rank-right-credits"></div>
+                </div>
+                <div class="cta">Prefer this →</div>
+              </div>
+            </div>
           </div>
+
+          <div class="r-secondary">
+            <button id="btn-rank-skip">↷ Skip this pair</button>
+          </div>
+
+          <p class="empty-msg" id="ranking-empty-message"></p>
         </div>
-      </section>
 
-      <!-- Ranking screen (used for Watchlist + Seen) -->
-      <section id="screen-ranking" class="screen hidden">
-        <div class="card">
-          <div class="screen-header">
-            <h2 id="ranking-title">Ranking</h2>
-            <button class="link-button" id="btn-ranking-back">← Back to main menu</button>
-          </div>
-          <p id="ranking-description" class="small-text">
-            Choose which movie you’d rather watch / which you like more. Over time, this builds your ranking.
-          </p>
-
-          <div id="ranking-pair-area">
-            <div id="ranking-pair" class="ranking-pair-container">
-              <div class="ranking-option">
-                <img id="rank-left-poster" class="ranking-poster" src="" alt="Movie poster" />
-                <div class="movie-title-large" id="rank-left-title"></div>
-                <div id="rank-left-meta" class="movie-meta-small"></div>
-                <div id="rank-left-credits" class="ranking-credits"></div>
-                <button id="btn-rank-left">Prefer this</button>
-              </div>
-
-              <div class="ranking-vs">vs</div>
-
-              <div class="ranking-option">
-                <img id="rank-right-poster" class="ranking-poster" src="" alt="Movie poster" />
-                <div class="movie-title-large" id="rank-right-title"></div>
-                <div id="rank-right-meta" class="movie-meta-small"></div>
-                <div id="rank-right-credits" class="ranking-credits"></div>
-                <button id="btn-rank-right">Prefer this</button>
-              </div>
-            </div>
-
-            <p id="ranking-empty-message" class="small-text muted"></p>
-          </div>
-
-          <div class="ranking-list-wrapper">
+        <!-- Mini ranking list -->
+        <div class="mini-rank" id="ranking-list-wrap">
+          <div class="h">
             <h3>Current ranking</h3>
-            <ol id="ranking-list"></ol>
+            <span class="sub" id="ranking-list-label">TOP 5</span>
+          </div>
+          <div id="ranking-list"></div>
+        </div>
+      </section>
+
+      <!-- ═══════════════ TOP PICKS ═══════════════ -->
+      <section class="screen hidden" id="screen-stats">
+        <div class="back-bar">
+          <button class="back" id="btn-stats-back" aria-label="Back">←</button>
+          <h1>Top picks</h1>
+          <div class="seg" id="stats-seg" style="margin-left:auto;">
+            <button class="active" data-mode="watchlist">Want</button>
+            <button data-mode="seen">Seen</button>
+          </div>
+        </div>
+
+        <div class="top-hero">
+          <div class="eye">🎲 Tonight's pick</div>
+          <h2 id="stats-top-title">—</h2>
+          <div class="foot">
+            <button class="chip on" id="btn-stats-rank">⚖ Rank more</button>
+            <button class="chip" id="btn-stats-reshuffle">↻ Shuffle</button>
+          </div>
+        </div>
+
+        <div id="stats-ranking-list"></div>
+
+        <div class="top-insights">
+          <div class="ins">
+            <div class="k">confidence</div>
+            <div class="v" id="stats-confidence">—</div>
+            <div class="bar" style="margin-top:6px;"><i id="stats-conf-bar" style="width:0%"></i></div>
+            <div class="d" id="stats-conf-desc"></div>
+          </div>
+          <div class="ins">
+            <div class="k">saved by A&gt;B&gt;C</div>
+            <div class="v" style="color:var(--accent);" id="stats-inferred">0</div>
+            <div class="d">pairs inferred, not asked</div>
           </div>
         </div>
       </section>
-    </main>
 
-    <footer>
-      <p>Pick A Movie • data stored locally in your browser</p>
-    </footer>
-  </div>
+      <!-- ═══════════════ SETTINGS ═══════════════ -->
+      <section class="screen hidden" id="screen-settings">
+        <div class="back-bar">
+          <button class="back" id="btn-settings-back" aria-label="Back">←</button>
+          <h1>Settings</h1>
+        </div>
 
-  <!-- New: big movie list in its own file -->
-  <script src="movies.js" defer></script>
-  <script src="movie_metadata.js" defer></script>
-  <script src="script.js" defer></script>
+        <div class="list-header">Data</div>
+        <div class="list-card">
+          <button class="list-row" id="btn-export-data" style="width:100%;text-align:left;">
+            <div class="icon-box">💾</div>
+            <div class="text"><div class="t">Export my data</div><div class="s">Download a JSON backup</div></div>
+            <div class="chev">›</div>
+          </button>
+          <button class="list-row" id="btn-import-data" style="width:100%;text-align:left;">
+            <div class="icon-box">📥</div>
+            <div class="text"><div class="t">Import data</div><div class="s">Replaces current state</div></div>
+            <div class="chev">›</div>
+          </button>
+        </div>
+        <input type="file" id="import-file-input" accept="application/json" style="display:none" />
+
+        <div class="list-header">Discovery filters</div>
+        <div class="list-card" style="padding:14px 16px;">
+          <div style="margin-bottom:14px;">
+            <div class="filter-label">Decade</div>
+            <div class="d-facts" id="decade-filters"></div>
+          </div>
+          <div>
+            <div class="filter-label">Min rating</div>
+            <div class="d-facts" id="rating-chips">
+              <span class="chip active" data-rating="0">any</span>
+              <span class="chip" data-rating="6">6+</span>
+              <span class="chip" data-rating="7">7+</span>
+              <span class="chip" data-rating="8">8+</span>
+              <span class="chip" data-rating="9">9+</span>
+            </div>
+          </div>
+          <div style="margin-top:10px;">
+            <button class="chip" id="btn-clear-filters" style="margin-top:4px;">↺ Reset filters</button>
+          </div>
+        </div>
+
+        <div class="list-header">Rankings</div>
+        <div class="list-card">
+          <button class="list-row danger" id="btn-clear-watchlist-rankings" style="width:100%;text-align:left;">
+            <div class="icon-box" style="color:var(--bad);">↺</div>
+            <div class="text"><div class="t">Clear watchlist rankings</div><div class="s">Keeps classifications</div></div>
+          </button>
+          <button class="list-row danger" id="btn-clear-seen-rankings" style="width:100%;text-align:left;">
+            <div class="icon-box" style="color:var(--bad);">↺</div>
+            <div class="text"><div class="t">Clear seen rankings</div><div class="s">Keeps classifications</div></div>
+          </button>
+        </div>
+
+        <div class="list-header">About</div>
+        <div class="list-card" style="padding:14px 16px;">
+          <p style="color:var(--ink-dim);font-size:13px;line-height:1.55;margin:0;">All data stays in your browser. No account, no server. Export often.</p>
+        </div>
+      </section>
+
+      <div style="height:20px;"></div>
+    </div><!-- /app-body -->
+
+    <!-- Toasts -->
+    <div class="toast-wrap" id="toasts"></div>
+
+    <!-- Tab bar -->
+    <nav class="tabbar" id="tabbar">
+      <button class="tab active" data-nav="home"><span class="ico">●</span><span>Home</span></button>
+      <button class="tab" data-nav="discovery"><span class="ico">🎬</span><span>Discover</span></button>
+      <button class="tab" data-nav="ranking"><span class="ico">⚖</span><span>Rank</span></button>
+      <button class="tab" data-nav="stats"><span class="ico">🏆</span><span>Top</span></button>
+      <button class="tab" data-nav="settings"><span class="ico">⚙</span><span>More</span></button>
+    </nav>
+
+  </div><!-- /phone -->
+</div><!-- /stage -->
+
+<script src="movies.js" defer></script>
+<script src="movie_metadata.js" defer></script>
+<script src="script.js" defer></script>
 </body>
 </html>
