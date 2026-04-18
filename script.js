@@ -83,6 +83,13 @@ function importStateFromFile(file) {
   reader.readAsText(file);
 }
 
+// genres is stored as an array in movies.js
+function getGenres(movie) {
+  const g = movie?.genres;
+  if (!g) return [];
+  return Array.isArray(g) ? g : g.split(",").map(s => s.trim());
+}
+
 // ─── Toast ──────────────────────────────────────────────────────────────────
 
 function showToast(msg, count) {
@@ -168,7 +175,7 @@ function updateTonightsPick() {
   if (metaEl) {
     const parts = [];
     if (movie?.year) parts.push(movie.year);
-    const genre = movie?.genres?.split(",")[0]?.trim();
+    const genre = getGenres(movie)[0];
     if (genre) parts.push(genre);
     metaEl.textContent = parts.join(" · ");
   }
@@ -298,7 +305,7 @@ function renderDiscovery() {
   if (metaEl) {
     const parts = [];
     if (movie?.year) parts.push(movie.year);
-    const firstGenre = movie?.genres?.split(",")[0]?.trim();
+    const firstGenre = getGenres(movie)[0];
     if (firstGenre) parts.push(firstGenre);
     if (metadata?.rating) parts.push(`★ ${metadata.rating.toFixed(1)}`);
     metaEl.textContent = parts.join(" · ");
@@ -316,7 +323,7 @@ function renderDiscovery() {
   if (chipsEl) {
     const chips = [];
     if (movie?.genres) {
-      movie.genres.split(",").slice(0, 3).forEach(g => chips.push(`<span class="chip">${g.trim()}</span>`));
+      getGenres(movie).slice(0, 3).forEach(g => chips.push(`<span class="chip">${g.trim()}</span>`));
     }
     if (metadata?.rating) chips.push(`<span class="chip star">★ ${metadata.rating.toFixed(1)}</span>`);
     chipsEl.innerHTML = chips.join("");
@@ -550,14 +557,14 @@ function pickNextPair() {
   const leftMetaParts = [];
   if (leftMeta?.rating) leftMetaParts.push(`★ ${leftMeta.rating.toFixed(1)}`);
   if (leftMovie?.year) leftMetaParts.push(leftMovie.year);
-  const firstLGenre = leftMovie?.genres?.split(",")[0]?.trim();
+  const firstLGenre = getGenres(leftMovie)[0];
   if (firstLGenre) leftMetaParts.push(firstLGenre);
   setText("rank-left-meta", leftMetaParts.join(" · "));
 
   const rightMetaParts = [];
   if (rightMeta?.rating) rightMetaParts.push(`★ ${rightMeta.rating.toFixed(1)}`);
   if (rightMovie?.year) rightMetaParts.push(rightMovie.year);
-  const firstRGenre = rightMovie?.genres?.split(",")[0]?.trim();
+  const firstRGenre = getGenres(rightMovie)[0];
   if (firstRGenre) rightMetaParts.push(firstRGenre);
   setText("rank-right-meta", rightMetaParts.join(" · "));
 
